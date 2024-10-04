@@ -1,7 +1,7 @@
 import tkinter as tk
 from PIL import Image, ImageTk
 import customtkinter as ctk  # CustomTkinter for buttons
-from registerface import Register_face
+from registerface import Register_Face
 from face_check import face_handler
 import os
 import threading
@@ -14,8 +14,8 @@ class Application(tk.Tk):
         self.geometry("1000x800")
 
         # Configure 1x2 layout for the entire app
-        self.rowconfigure(0, weight=1)  # Only one row
-        self.columnconfigure(0, weight=2, minsize=500)  # First column (image)
+        self.rowconfigure(0, weight=1)  #
+        self.columnconfigure(0, weight=3, minsize=500)  # First column (image)
         self.columnconfigure(1, weight=1, minsize=500)  # Second column (content)
 
         # Load and display the image in the first column
@@ -69,10 +69,10 @@ class HomePage(tk.Frame):
     def create_navigation_buttons(self, controller):
         """Create buttons for Register and Verify actions using CustomTkinter."""
         register_button = ctk.CTkButton(self, text="Register Face", command=lambda: controller.show_frame(Register))
-        register_button.pack(pady=20, padx=10, fill="x")
+        register_button.pack(pady=30, padx=10,fill=tk.BOTH )
 
         verify_button = ctk.CTkButton(self, text="Verify Face", command=lambda: controller.show_frame(Verify))
-        verify_button.pack(pady=10, padx=10, fill="x")
+        verify_button.pack(pady=5, padx=10,fill=tk.BOTH)
 
 
 class Verify(tk.Frame):
@@ -106,8 +106,7 @@ class Verify(tk.Frame):
                 x=face.validate_face()
                 
                 print(x)
-                self.result_label = ctk.CTkLabel(self, text='', font=("Helvetica", 18))
-                self.result_label.pack(pady=10, padx=10)
+                
                 
                 
                 if x:
@@ -123,10 +122,10 @@ class Verify(tk.Frame):
 
         # Create a button to trigger the face verification
         verify_button = ctk.CTkButton(self, text="Verify Face", command=verify_face)
-        verify_button.pack(pady=10, padx=10)
+        verify_button.pack(pady=10, padx=10 )
 
         back_button = ctk.CTkButton(self, text="Back to Home", command=lambda: controller.show_frame(HomePage))
-        back_button.pack(pady=5)
+        back_button.pack(pady=5,expand=True)
 
 
 class Register(tk.Frame):
@@ -135,6 +134,20 @@ class Register(tk.Frame):
 
         label = tk.Label(self, text="This is the Register Page", font=("Helvetica", 18))
         label.pack(pady=10, padx=10)
+        # input for name  
+        input_label = tk.Entry(self)
+        input_label.pack(pady=5)
+        def Register_fa():
+            name=input_label.get()
+            print(f"Registering face for {name}")
+            face=Register_Face(name)
+            face.Register()
+            print(f"Face registered for {name}")
+
+            
+        # register button
+        register_button=ctk.CTkButton(self, text="Register Face", command=Register_fa)
+        register_button.pack(pady=30, padx=10 )
 
         back_button = ctk.CTkButton(self, text="Back to Home", command=lambda: controller.show_frame(HomePage))
         back_button.pack(pady=5)
